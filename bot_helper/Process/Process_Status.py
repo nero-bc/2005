@@ -66,23 +66,54 @@ async def getdrivelink(search_command, event):
         LOGGER.info(str(e))
         return False
 
+# async def check_file_drive_link(search_command, event, fileloc, r_config, drive_name, name, caption):
+#                                 file_id = await getdrivelink(search_command, event)
+#                                 if file_id:
+#                                         try:
+#                                                 fisize =str(get_human_size(getsize(fileloc)))
+#                                         except:
+#                                                 fisize = "Unknown"
+#                                         account_type = await get_account_type(r_config, drive_name)
+#                                         if account_type=="drive":
+#                                                 link_text = f"⛓Link: `https://drive.google.com/file/d/{file_id}/view`"
+#                                         else:
+#                                                 link_text = f"⛓File ID: `{file_id}`"
+#                                         file_text = f"✅Successfully Uploaded `{name}` To `{str(drive_name)}`\n\n{link_text}\n\n💽Size: {fisize}\n\n" + str(caption).strip() if caption else f"✅Successfully Uploaded `{name}` To `{str(drive_name)}`\n\n{link_text}\n\n💽Size: {fisize}"
+#                                 else:
+#                                         file_text = f"✅Successfully Uploaded `{name}` To `{str(drive_name)}`\n\n❗Failed To File ID\n\n" + str(caption).strip() if caption else f"✅Successfully Uploaded `{name}` To `{str(drive_name)}`\n\n❗Failed To File ID"
+#                                 await event.reply(str(file_text))
+#                                 return
+
+
+
 async def check_file_drive_link(search_command, event, fileloc, r_config, drive_name, name, caption):
-                                file_id = await getdrivelink(search_command, event)
-                                if file_id:
-                                        try:
+                                file_link = await rclone_get_link(drive_name, name, r_config)
+                                try:
                                                 fisize =str(get_human_size(getsize(fileloc)))
-                                        except:
+                                except:
                                                 fisize = "Unknown"
-                                        account_type = await get_account_type(r_config, drive_name)
-                                        if account_type=="drive":
-                                                link_text = f"⛓Link: `https://drive.google.com/file/d/{file_id}/view`"
-                                        else:
-                                                link_text = f"⛓File ID: `{file_id}`"
+                                if file_link:
+                                        link_text = f"⛓Link: `{file_link}`"
                                         file_text = f"✅Successfully Uploaded `{name}` To `{str(drive_name)}`\n\n{link_text}\n\n💽Size: {fisize}\n\n" + str(caption).strip() if caption else f"✅Successfully Uploaded `{name}` To `{str(drive_name)}`\n\n{link_text}\n\n💽Size: {fisize}"
                                 else:
-                                        file_text = f"✅Successfully Uploaded `{name}` To `{str(drive_name)}`\n\n❗Failed To File ID\n\n" + str(caption).strip() if caption else f"✅Successfully Uploaded `{name}` To `{str(drive_name)}`\n\n❗Failed To File ID"
+                                        file_text = f"✅Successfully Uploaded `{name}` To `{str(drive_name)}`\n\n❗Failed To Get Link\n\n" + str(caption).strip() if caption else f"✅Successfully Uploaded `{name}` To `{str(drive_name)}`\n\n❗Failed To Get Link"
                                 await event.reply(str(file_text))
                                 return
+
+
+
+async def rclone_get_link(remote,name, conf):
+        cmd =  ["rclone", "link", f'--config={conf}', f"{remote}:{name}"]
+        LOGGER.info(f"Getting Uploaded File {name} Link From {remote}")
+        process = await create_subprocess_exec(*cmd, stdout=asyncioPIPE, stderr=asyncioPIPE)
+        out, _ = await process.communicate()
+        url = out.decode().strip()
+        return_code = await process.wait()
+        if return_code == 0:
+                return url
+        else:
+                return False
+        
 
 
 def get_progress_bar_from_percentage(percentage):

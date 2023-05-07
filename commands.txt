@@ -9,6 +9,8 @@ gensample - Generate Sample Video
 genss - Generate Screenshots
 changemetadata - Change Video Metadata
 changeindex - Change Index Or Remove Stream
+mirror - Mirror File
+leech - Leech File
 savewatermark - Save Watermark Image
 savethumb - Save Static Thumbnail
 saveconfig - Save Rclone Config

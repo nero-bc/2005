@@ -14,6 +14,7 @@ class Names:
     gensample = "VideoSample"
     genss ="GenSS"
     leech="Leech"
+    mirror="Mirror"
     changeMetadata = 'ChangeMetadata'
     changeindex = "ChangeIndex"
     STATUS = {compress: "🏮Compressing", 

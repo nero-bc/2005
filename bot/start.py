@@ -717,8 +717,8 @@ async def _speed_test(event):
 async def _startmsg(event):
     text = f"Hi {get_mention(event)}, I Am Alive."
     await event.reply(text, buttons=[
-    [Button.url('⭐ Bot By 𝚂𝚊𝚑𝚒𝚕 ⭐', 'https://t.me/nik66')],
-    [Button.url('❤ Join Channel ❤', 'https://t.me/nik66x')]
+    [Button.url('⭐ Bot By Bridi ⭐', 'https://t.me/thoursbridi)],
+    [Button.url('❤ Join Channel ❤', 'https://t.me/SourcePleaseOfficial')]
 ])
     return
 

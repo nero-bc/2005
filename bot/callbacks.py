@@ -144,7 +144,7 @@ async def callback(event):
         
         
         elif txt=="nik66bots":
-            await event.answer(f"⚡Bot By Sahil⚡", alert=True)
+            await event.answer(f"⚡Bot By Bridi⚡", alert=True)
             return
         
         
